@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: TestFullStack
+  datasource:
+    url: jdbc:postgresql://localhost:5455/testdb
+    username: admin
+    password: secret
+  flyway:
+    enabled: true
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    org.springframework.jdbc.core: DEBUG

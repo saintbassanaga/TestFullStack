@@ -1,0 +1,18 @@
+<div th:fragment="table">
+    <table class="wa-table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Variants</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products}">
+            <td th:text="${p.title}"></td>
+            <td th:text="${p.price}"></td>
+            <td th:text="${p.variants}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
