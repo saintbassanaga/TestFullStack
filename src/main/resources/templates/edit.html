@@ -4,8 +4,32 @@
     <!-- WebAwesome UI -->
     <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css"/>
     <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"></script>
+    <style>
+        td {
+            max-width: 200px;       /* limit column width */
+            white-space: nowrap;    /* prevent text wrapping */
+            overflow: hidden;       /* hide overflow */
+            text-overflow: ellipsis;/* add "..." */
+        }
+
+        html, body {
+            height: 100%;         /* Full viewport height */
+            margin: 0;            /* Remove default margin */
+        }
+
+        .page-center {
+            display: block;                    /* Flex container */
+            justify-content: center;          /* Horizontal centering */
+            align-items: center;              /* Vertical centering */
+            min-height: 100vh;                /* Ensure full viewport height */
+            padding: 2rem;                    /* Optional spacing around content */
+            box-sizing: border-box;           /* Include padding in size */
+        }
+
+
+    </style>
 </head>
-<body class="wa-body">
+<body class="wa-body page-center">
 <header class="wa-mb--lg">
     <h1>Edit Product</h1>
     <a href="/search" class="wa-link">Back to Search</a>
@@ -33,11 +57,11 @@
             <div class="wa-form-group wa-col-span--full">
                 <label>
                     Variants
-                    <input type="text" name="variants" class="wa-input" placeholder="Variants" th:value="${product.variants}">
+                    <input type="text" name="variants" class="wa-input" placeholder="Variants" th:value="${product.variants}" >
                 </label>
             </div>
         </div>
-        <div class="wa-mt--md">
+        <div class="wa-mt--md page-center">
             <button type="submit" class="wa-button wa-btn--primary">Save</button>
             <a th:href="@{'/search'}" class="wa-button wa-btn--secondary">Cancel</a>
         </div>

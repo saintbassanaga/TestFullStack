@@ -7,81 +7,94 @@
     <!-- WebAwesome UI -->
     <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css"/>
     <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"></script>
+    <style>
+        td {
+            max-width: 200px;       /* limit column width */
+            white-space: nowrap;    /* prevent text wrapping */
+            overflow: hidden;       /* hide overflow */
+            text-overflow: ellipsis;/* add "..." */
+        }
+
+        html, body {
+            height: 100%;         /* Full viewport height */
+            margin: 0;            /* Remove default margin */
+        }
+
+        .page-center {
+            display: block;                    /* Flex container */
+            justify-content: center;          /* Horizontal centering */
+            align-items: center;              /* Vertical centering */
+            min-height: 100vh;                /* Ensure full viewport height */
+            padding: 2rem;                    /* Optional spacing around content */
+            box-sizing: border-box;           /* Include padding in size */
+        }
+
+
+    </style>
 </head>
-<body class="wa-body">
+<body class="wa-body page-center">
 
-<header class="wa-mb--lg">
-    <h1>Products</h1>
-</header>
+    <header class="wa-mb--lg align-center">
+        <h1>Products</h1>
+    </header>
 
-<!-- Sorting Controls -->
-<div class="wa-stack wa-stack--row wa-mb--md wa-gap--md">
-    <label class="wa-form-group">
-        Sort by
-        <select id="sort" name="sort" class="wa-select"
+
+    <form hx-post="/products" hx-target="#products-table" hx-swap="outerHTML" class="wa-form wa-mt--md">
+        <div class="wa-grid" style="grid-template-columns: 6rem 1fr; gap: 1rem;">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" class="wa-input" placeholder="Title" required>
+
+            <label for="price">Price</label>
+            <input type="number" id="price" step="0.11" name="price" class="wa-input" placeholder="Price" required>
+
+            <div></div> <!-- empty cell for alignment -->
+            <button type="submit" class="wa-btn wa-btn--success">Add</button>
+        </div>
+    </form>
+
+
+    <!-- Sorting Controls -->
+    <div class="wa-stack wa-stack--row wa-mb--md wa-gap--md">
+        <label class="wa-form-group">
+            Sort by
+            <select id="sort" name="sort" class="wa-select"
+                    hx-get="/products"
+                    hx-target="#products-table"
+                    hx-swap="outerHTML">
+                <option value="newest" selected>Newest</option>
+                <option value="priceAsc">Price: Low to High</option>
+                <option value="priceDesc">Price: High to Low</option>
+            </select>
+        </label>
+
+        <!-- Load Products Button -->
+        <button class="wa-btn wa-btn--primary"
                 hx-get="/products"
                 hx-target="#products-table"
-                hx-swap="outerHTML">
-            <option value="newest" selected>Newest</option>
-            <option value="priceAsc">Price: Low to High</option>
-            <option value="priceDesc">Price: High to Low</option>
-        </select>
-    </label>
+                hx-swap="outerHTML"
+                hx-include="#sort">
+            Load Products
+        </button>
+    </div>
 
-    <!-- Load Products Button -->
-    <button class="wa-btn wa-btn--primary"
-            hx-get="/products"
-            hx-target="#products-table"
-            hx-swap="outerHTML"
-            hx-include="#sort">
-        Load Products
-    </button>
-</div>
-
-<!-- Table container -->
-<div id="products-table" class="wa-table-container">
-    <table class="wa-table wa-table--bordered">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Variants</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td colspan="4">No products loaded yet.</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- Add Product Form -->
-<section class="wa-stack">
-    <h3>Add Product</h3>
-    <form hx-post="/products" hx-target="#products-table" hx-swap="outerHTML" class="wa-form wa-mt--md ">
-        <div class="wa-grid" style="--min-column-size: 6rem;">
-            <div class="wa-form-group wa-gap-s">
-                <label>
-                    Title
-                    <input type="text" name="title" class="wa-input" placeholder="Title" required>
-                </label>
-
-            </div>
-            <div class="wa-form-group ">
-                <label>
-                    Price
-                    <input type="number" step="0.11" name="price" class="wa-input" placeholder="Price" required>
-                </label>
-            </div>
-
-            <button type="submit" class="wa-button wa-mb--md wa-btn--success">Add</button>
-        </div>
-
-
-    </form>
-</section>
+    <!-- Table container -->
+    <div id="products-table" class="wa-table-container">
+        <table class="wa-table wa-table--bordered">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Variants</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="4">No products loaded yet.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
 </body>
 </html>

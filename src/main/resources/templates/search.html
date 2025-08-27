@@ -9,11 +9,39 @@
     <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"></script>
 
     <style>
-        .htmx-indicator { display: none; }
-        .htmx-request .htmx-indicator { display: inline-block; }
+        .htmx-indicator {
+            display: none;
+        }
+
+        .htmx-request .htmx-indicator {
+            display: inline-block;
+        }
+        td {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .page-center {
+            display: block;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+
+
     </style>
 </head>
-<body class="wa-body">
+<body class="wa-body page-center">
 
 <header class="wa-mb--lg">
     <h1>Search Products</h1>
@@ -25,22 +53,24 @@
     <div class="wa-form-group">
         <label>
             Search by title
-            <input
-                id="searchInput"
-                class="wa-input"
-                type="text"
-                name="q"
-                placeholder="Type to search..."
-                hx-get="/products/search"
-                hx-trigger="keyup changed delay:300ms, search"
-                hx-target="#products-table"
-                hx-swap="outerHTML"
-                hx-include="#sort"
-            />
+            <div class="wa-token-input">
+                <input
+                        id="searchInput"
+                        class="wa-input"
+                        type="text"
+                        name="q"
+                        placeholder="Type to search..."
+                        hx-get="/products/search"
+                        hx-trigger="keyup changed delay:300ms, search"
+                        hx-target="#products-table"
+                        hx-swap="outerHTML"
+                        hx-include="#sort"
+                />
+            </div>
         </label>
         <span class="htmx-indicator">Searching...</span>
     </div>
-
+</div>
     <label class="wa-form-group">
         Sort by
         <select id="sort" name="sort" class="wa-select"
