@@ -28,12 +28,23 @@ class ProductScheduler(private val repo: ProductRepository) {
         val products = response?.get("products")?.take(50) ?: return
 
         for (p in products) {
-            val product = Product(
-                title = p.get("title").asText(),
-                price = p.get("price")?.asText()?.toBigDecimalOrNull() ?: BigDecimal.ZERO,
-                variants = p.get("variants").toString()
-            )
-            repo.save(product)
+            val title = p.get("title").asText()
+            val price = p.get("price")?.asText()?.toBigDecimalOrNull() ?: BigDecimal.ZERO
+            val variants = p.get("variants").toString()
+
+            val existing = repo.findByTitle(title)
+            if (existing != null && existing.id != null) {
+                // Update existing product with latest data
+                repo.update(existing.id, title, price, variants)
+            } else {
+                // Insert new product
+                val product = Product(
+                    title = title,
+                    price = price,
+                    variants = variants
+                )
+                repo.save(product)
+            }
         }
     }
 }

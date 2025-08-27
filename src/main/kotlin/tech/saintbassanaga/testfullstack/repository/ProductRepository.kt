@@ -55,6 +55,13 @@ class ProductRepository(private val jdbcClient: JdbcClient) {
             .optional()
             .orElse(null)
 
+    fun findByTitle(title: String): Product? =
+        jdbcClient.sql("SELECT * FROM products WHERE title = :title LIMIT 1")
+            .param("title", title)
+            .query(Product::class.java)
+            .optional()
+            .orElse(null)
+
     fun save(product: Product) {
         jdbcClient.sql("INSERT INTO products (title, price, variants) VALUES (:title, :price, :variants)")
             .param("title", product.title)
