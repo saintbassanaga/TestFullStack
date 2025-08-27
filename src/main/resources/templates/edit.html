@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Edit Product</title>
+    <!-- WebAwesome UI -->
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css"/>
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"></script>
+</head>
+<body class="wa-body">
+<header class="wa-mb--lg">
+    <h1>Edit Product</h1>
+    <a href="/search" class="wa-link">Back to Search</a>
+    <a href="/" class="wa-link wa-ml--sm">Home</a>
+</header>
+
+<section class="wa-stack">
+    <div th:if="${error}" class="wa-alert wa-alert--danger" th:text="${error}"></div>
+    <div th:if="${message}" class="wa-alert wa-alert--success" th:text="${message}"></div>
+
+    <form th:if="${product != null}" th:action="@{'/products/' + ${product.id}}" method="post" class="wa-form wa-mt--md ">
+        <div class="wa-grid" style="--min-column-size: 6rem;">
+            <div class="wa-form-group wa-gap-s">
+                <label>
+                    Title
+                    <input type="text" name="title" class="wa-input" placeholder="Title" required th:value="${product.title}">
+                </label>
+            </div>
+            <div class="wa-form-group">
+                <label>
+                    Price
+                    <input type="number" step="0.01" name="price" class="wa-input" placeholder="Price" required th:value="${product.price}">
+                </label>
+            </div>
+            <div class="wa-form-group wa-col-span--full">
+                <label>
+                    Variants
+                    <input type="text" name="variants" class="wa-input" placeholder="Variants" th:value="${product.variants}">
+                </label>
+            </div>
+        </div>
+        <div class="wa-mt--md">
+            <button type="submit" class="wa-button wa-btn--primary">Save</button>
+            <a th:href="@{'/search'}" class="wa-button wa-btn--secondary">Cancel</a>
+        </div>
+    </form>
+</section>
+
+</body>
+</html>
