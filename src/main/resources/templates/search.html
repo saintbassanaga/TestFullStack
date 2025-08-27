@@ -1,0 +1,45 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Search Products</title>
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+
+    <!-- WebAwesome UI -->
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/styles/webawesome.css"/>
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.4/dist/webawesome.loader.js"></script>
+
+    <style>
+        .htmx-indicator { display: none; }
+        .htmx-request .htmx-indicator { display: inline-block; }
+    </style>
+</head>
+<body class="wa-body">
+
+<header class="wa-mb--lg">
+    <h1>Search Products</h1>
+    <a href="/" class="wa-link">Back to Home</a>
+</header>
+
+<!-- Search Input -->
+<div class="wa-form-group wa-mb--md">
+    <label>
+        Search by title
+        <input
+            class="wa-input"
+            type="text"
+            name="q"
+            placeholder="Type to search..."
+            hx-get="/products/search"
+            hx-trigger="keyup changed delay:300ms, search"
+            hx-target="#products-table"
+            hx-swap="outerHTML"
+        />
+    </label>
+    <span class="htmx-indicator">Searching...</span>
+</div>
+
+<!-- Results Table -->
+<div id="products-table" th:replace="fragments/products :: table"></div>
+
+</body>
+</html>
