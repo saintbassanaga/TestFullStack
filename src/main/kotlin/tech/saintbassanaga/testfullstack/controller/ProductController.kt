@@ -21,29 +21,37 @@ class ProductController(private val repo: ProductRepository) {
     fun index(): String = "index"
 
     @GetMapping("/search")
-    fun searchPage(model: Model): String {
-        model.addAttribute("products", repo.findAll())
+    fun searchPage(model: Model, @RequestParam(required = false, name = "sort") sort: String?): String {
+        model.addAttribute("products", repo.findAllSorted(sort))
+        model.addAttribute("sort", sort ?: "newest")
         return "search"
     }
 
     @GetMapping("/products")
-    fun listProducts(model: Model): String {
-        model.addAttribute("products", repo.findAll())
+    fun listProducts(model: Model, @RequestParam(required = false, name = "sort") sort: String?): String {
+        model.addAttribute("products", repo.findAllSorted(sort))
+        model.addAttribute("sort", sort ?: "newest")
         return "fragments/products :: table"
     }
 
     @GetMapping("/products/search")
-    fun searchProducts(@RequestParam(required = false, name = "q") q: String?, model: Model): String {
+    fun searchProducts(
+        @RequestParam(required = false, name = "q") q: String?,
+        @RequestParam(required = false, name = "sort") sort: String?,
+        model: Model
+    ): String {
         val query = q?.trim().orEmpty()
-        val products = if (query.isBlank()) repo.findAll() else repo.searchByTitle(query)
+        val products = if (query.isBlank()) repo.findAllSorted(sort) else repo.searchByTitleSorted(query, sort)
         model.addAttribute("products", products)
+        model.addAttribute("sort", sort ?: "newest")
         return "fragments/products :: table"
     }
 
     @PostMapping("/products")
     fun addProduct(@RequestParam title: String, @RequestParam price: String, model: Model): String {
         repo.save(Product(title = title, price = price.toBigDecimal()))
-        model.addAttribute("products", repo.findAll())
+        model.addAttribute("products", repo.findAllSorted("newest"))
+        model.addAttribute("sort", "newest")
         return "fragments/products :: table"
     }
 
@@ -51,7 +59,8 @@ class ProductController(private val repo: ProductRepository) {
     fun editProduct(@PathVariable id: Long, model: Model): String {
         val product = repo.findById(id) ?: run {
             model.addAttribute("error", "Product not found")
-            model.addAttribute("products", repo.findAll())
+            model.addAttribute("products", repo.findAllSorted("newest"))
+            model.addAttribute("sort", "newest")
             return "search"
         }
         model.addAttribute("product", product)
@@ -79,7 +88,8 @@ class ProductController(private val repo: ProductRepository) {
     @DeleteMapping("/products/{id}")
     fun deleteProduct(@PathVariable id: Long, model: Model): String {
         repo.deleteById(id)
-        model.addAttribute("products", repo.findAll())
+        model.addAttribute("products", repo.findAllSorted("newest"))
+        model.addAttribute("sort", "newest")
         return "fragments/products :: table"
     }
 }

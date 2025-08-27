@@ -16,16 +16,37 @@ import java.math.BigDecimal
 @Repository
 class ProductRepository(private val jdbcClient: JdbcClient) {
 
+    private fun toOrderBy(sort: String?): String = when (sort) {
+        "priceAsc" -> "price ASC, created_at DESC"
+        "priceDesc" -> "price DESC, created_at DESC"
+        else -> "created_at DESC"
+    }
+
     fun findAll(): List<Product> =
         jdbcClient.sql("SELECT * FROM products ORDER BY created_at DESC")
             .query(Product::class.java)
             .list()
+
+    fun findAllSorted(sort: String?): List<Product> {
+        val orderBy = toOrderBy(sort)
+        val sql = "SELECT * FROM products ORDER BY $orderBy"
+        return jdbcClient.sql(sql).query(Product::class.java).list()
+    }
 
     fun searchByTitle(query: String): List<Product> =
         jdbcClient.sql("SELECT * FROM products WHERE title ILIKE '%' || :q || '%' ORDER BY created_at DESC")
             .param("q", query)
             .query(Product::class.java)
             .list()
+
+    fun searchByTitleSorted(query: String, sort: String?): List<Product> {
+        val orderBy = toOrderBy(sort)
+        val sql = "SELECT * FROM products WHERE title ILIKE '%' || :q || '%' ORDER BY $orderBy"
+        return jdbcClient.sql(sql)
+            .param("q", query)
+            .query(Product::class.java)
+            .list()
+    }
 
     fun findById(id: Long): Product? =
         jdbcClient.sql("SELECT * FROM products WHERE id = :id")

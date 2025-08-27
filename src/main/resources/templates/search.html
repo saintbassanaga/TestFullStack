@@ -20,22 +20,40 @@
     <a href="/" class="wa-link">Back to Home</a>
 </header>
 
-<!-- Search Input -->
-<div class="wa-form-group wa-mb--md">
-    <label>
-        Search by title
-        <input
-            class="wa-input"
-            type="text"
-            name="q"
-            placeholder="Type to search..."
-            hx-get="/products/search"
-            hx-trigger="keyup changed delay:300ms, search"
-            hx-target="#products-table"
-            hx-swap="outerHTML"
-        />
+<!-- Controls: Search + Sort -->
+<div class="wa-stack wa-stack--row wa-gap--md wa-mb--md">
+    <div class="wa-form-group">
+        <label>
+            Search by title
+            <input
+                id="searchInput"
+                class="wa-input"
+                type="text"
+                name="q"
+                placeholder="Type to search..."
+                hx-get="/products/search"
+                hx-trigger="keyup changed delay:300ms, search"
+                hx-target="#products-table"
+                hx-swap="outerHTML"
+                hx-include="#sort"
+            />
+        </label>
+        <span class="htmx-indicator">Searching...</span>
+    </div>
+
+    <label class="wa-form-group">
+        Sort by
+        <select id="sort" name="sort" class="wa-select"
+                hx-get="/products/search"
+                hx-trigger="change"
+                hx-target="#products-table"
+                hx-swap="outerHTML"
+                hx-include="#searchInput">
+            <option value="newest" selected>Newest</option>
+            <option value="priceAsc">Price: Low to High</option>
+            <option value="priceDesc">Price: High to Low</option>
+        </select>
     </label>
-    <span class="htmx-indicator">Searching...</span>
 </div>
 
 <!-- Results Table -->
