@@ -5,16 +5,28 @@
             <th>Title</th>
             <th>Price</th>
             <th>Variants</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:if="${#lists.isEmpty(products)}">
-            <td colspan="3" class="wa-text--center">No products available.</td>
+            <td colspan="4" class="wa-text--center">No products available.</td>
         </tr>
         <tr th:each="p : ${products}">
             <td th:text="${p.title}"></td>
             <td th:text="${p.price}"></td>
             <td th:text="${p.variants}"></td>
+            <td class="wa-stack wa-stack--row wa-gap--sm">
+                <a class="wa-link" th:href="@{'/products/' + ${p.id} + '/edit'}">Update</a>
+                <button type="button"
+                        class="wa-link wa-text--danger"
+                        th:attr="hx-delete=@{'/products/' + ${p.id}}"
+                        hx-target="#products-table"
+                        hx-swap="outerHTML"
+                        hx-confirm="Are you sure you want to delete this product?">
+                    Delete
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>
