@@ -1,5 +1,5 @@
-<div th:fragment="table">
-    <table class="wa-table">
+<div id="products-table" th:fragment="table" class="wa-table-container wa-mb--lg">
+    <table class="wa-table wa-table--bordered wa-w--full">
         <thead>
         <tr>
             <th>Title</th>
@@ -8,6 +8,9 @@
         </tr>
         </thead>
         <tbody>
+        <tr th:if="${#lists.isEmpty(products)}">
+            <td colspan="3" class="wa-text--center">No products available.</td>
+        </tr>
         <tr th:each="p : ${products}">
             <td th:text="${p.title}"></td>
             <td th:text="${p.price}"></td>
