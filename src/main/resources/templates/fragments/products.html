@@ -15,8 +15,10 @@
         <tr th:each="p : ${products}">
             <td th:text="${p.title}"></td>
             <td th:text="${p.price}"></td>
-            <td th:text="${p.variants}" class="truncate"></td>
-            <td class="wa-stack wa-stack--row wa-gap--sm">
+            <td class="truncate"
+                th:text="${#strings.abbreviate(p.variants, 303)}"
+                th:title="${p.variants}">
+            </td>            <td class="wa-stack wa-stack--row wa-gap--sm">
                 <a class="wa-link" th:href="@{'/products/' + ${p.id} + '/edit'}">Update</a>
                 <button type="button"
                         class="wa-link wa-text--danger"
