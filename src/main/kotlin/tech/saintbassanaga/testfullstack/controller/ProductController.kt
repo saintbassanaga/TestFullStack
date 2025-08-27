@@ -21,9 +21,23 @@ class ProductController(private val repo: ProductRepository) {
     @GetMapping("/")
     fun index(): String = "index"
 
+    @GetMapping("/search")
+    fun searchPage(model: Model): String {
+        model.addAttribute("products", repo.findAll())
+        return "search"
+    }
+
     @GetMapping("/products")
     fun listProducts(model: Model): String {
         model.addAttribute("products", repo.findAll())
+        return "fragments/products :: table"
+    }
+
+    @GetMapping("/products/search")
+    fun searchProducts(@RequestParam(required = false, name = "q") q: String?, model: Model): String {
+        val query = q?.trim().orEmpty()
+        val products = if (query.isBlank()) repo.findAll() else repo.searchByTitle(query)
+        model.addAttribute("products", products)
         return "fragments/products :: table"
     }
 

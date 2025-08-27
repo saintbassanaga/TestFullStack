@@ -31,6 +31,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.projectlombok:lombok")
+    // https://mvnrepository.com/artifact/org.flywaydb/flyway-database-postgresql
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:11.11.2")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     runtimeOnly("org.postgresql:postgresql")

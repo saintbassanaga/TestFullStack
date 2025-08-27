@@ -20,6 +20,12 @@ class ProductRepository(private val jdbcClient: JdbcClient) {
             .query(Product::class.java)
             .list()
 
+    fun searchByTitle(query: String): List<Product> =
+        jdbcClient.sql("SELECT * FROM products WHERE title ILIKE '%' || :q || '%' ORDER BY created_at DESC")
+            .param("q", query)
+            .query(Product::class.java)
+            .list()
+
     fun save(product: Product) {
         jdbcClient.sql("INSERT INTO products (title, price, variants) VALUES (:title, :price, :variants)")
             .param("title", product.title)
